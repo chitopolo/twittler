@@ -3,25 +3,57 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <script src="moment.js"> </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
   </head>
-  <body>
+  <body class="container">
+    <div class="btn btn-primary" id="refresh"> Refresh</div>
+    <div class="insideBody row" >
+   
+ </div>
+
     <script>
 
       $(document).ready(function(){
-        var $body = $('body');
-        $body.html('');
+       
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-          index -= 1;
+        
+        var refresh = function(){
+         
+        $('.insideBody').html('');
+        var users = streams.home;
+        for(var i = 0 ; i<users.length ; i++){
+
+          var tweet = users[i];
+          console.log(tweet);
+
+           $( "<div class='row'><div class='btn btn-default col-md-2 user' >" + tweet.user +"</div> <div class=' col-md-6'>" + tweet.message + "</div> <div class='col-md-3'>" + moment(tweet.created_at).format('LL') +"</div></div>" ).appendTo( ".insideBody" );
+          
         }
+
+
+      };
+
+
+
+     $('.user').on('click', function(){
+        console.log('click en user');
+      
+      });
+
+     $('#refresh').on('click',refresh);
+
+
+
+
 
       });
 
+
+
+
     </script>
+   
   </body>
 </html>
