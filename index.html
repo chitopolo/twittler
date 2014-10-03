@@ -8,8 +8,12 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
   </head>
   <body class="container">
-    <div class="btn btn-primary" id="refresh"> Refresh</div>
-    <div class="insideBody row" >
+    <div class="btn btn-primary" id="refreshB"> Refresh</div>
+    <div class="btn btn-primary" id="showOnly"> User</div>
+    
+    <div class="tweets" >
+      
+       
    
  </div>
 
@@ -17,32 +21,46 @@
 
       $(document).ready(function(){
        
+          var $masterTweetList = $('.tweets');
 
-        
-        var refresh = function(){
-         
-        $('.insideBody').html('');
+
+
+
+          var showOnly = function(user){
+          $masterTweetList.html('');
+          // var users = streams.users[user];
+          for(var i = 0 ; i< streams.users[user].length ; i++){
+            var tweet = streams.users[user][i];
+            console.log(tweet);
+
+           $( "<div class='row'><div class='btn btn-default col-md-2' id='showOnly'>" + tweet.user +"</div> <div class=' col-md-6'>" + tweet.message + "</div> <div class='col-md-3'>" + moment(tweet.created_at).format('LL') +"</div></div>" ).appendTo( $masterTweetList);
+          }
+        };
+
+
+
+       var refresh = function(){
+        $masterTweetList.html('');
         var users = streams.home;
         for(var i = 0 ; i<users.length ; i++){
 
           var tweet = users[i];
           console.log(tweet);
 
-           $( "<div class='row'><div class='btn btn-default col-md-2 user' >" + tweet.user +"</div> <div class=' col-md-6'>" + tweet.message + "</div> <div class='col-md-3'>" + moment(tweet.created_at).format('LL') +"</div></div>" ).appendTo( ".insideBody" );
-          
-        }
+           $( "<div class='row tweetItem' ><div class='btn btn-default col-md-2' id='showOnly' >" + tweet.user +"</div> <div class=' col-md-6'>" + tweet.message + "</div> <div class='col-md-3'>" + moment(tweet.created_at).format('LL') +"</div></div>" ).appendTo($masterTweetList);
+         }
+    }
 
-
-      };
-
-
-
-     $('.user').on('click', function(){
-        console.log('click en user');
       
-      });
 
-     $('#refresh').on('click',refresh);
+
+     $(document).on('click', '#showOnly' ,function(){
+        console.log($(this).text());
+      showOnly($(this).text())
+
+     });
+
+     $('#refreshB').on('click',refresh);
 
 
 
