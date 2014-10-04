@@ -17,6 +17,11 @@ window.users = Object.keys(streams.users);
 var addTweet = function(newTweet){
 
   var username = newTweet.user;
+  //didn't work until i initialized the array
+  if(!streams.users[username]){
+   streams.users[username] = new Array();
+  }
+  
   streams.users[username].push(newTweet);
   streams.home.push(newTweet);
 };
