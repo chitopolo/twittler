@@ -1,45 +1,71 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <script src="jquery.js"></script>
-    <script src="data_generator.js"></script>
-    <script src="moment.js"> </script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-  </head>
-  <body class="container">
-    <div class="btn btn-primary" id="refreshB"> Refresh</div>
-   
-    
-    <div class="tweets" >
-      
-       
-   
- </div>
+<head>
+  <script src="jquery.js"></script>
+  <script src="data_generator.js"></script>
+  <script src="moment.js"> </script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+</head>
+<body class="container">
+  <div id="label">Your twitter: </div>
+  <div class="nTweet">
 
-    <script>
+    <input type="text" id="myUser">
+    <div class="btn btn-primary" id="register"> Register</div>
 
-      $(document).ready(function(){
-       
-          var $masterTweetList = $('.tweets');
+  </div>
+  <input type="text" id="nMessage">
+  
+<div class="btn btn-primary" id="publish"> Publish</div>
+  <br>
+  <div class="btn btn-primary" id="refreshB"> Refresh</div>
 
 
+  <div class="tweets" >
 
 
-          var showOnly = function(user){
-          $masterTweetList.html('');
+
+  </div>
+
+  <script>
+
+  $(document).ready(function(){
+     visitor = '';
+
+    var $masterTweetList = $('.tweets');
+
+    var showOnly = function(user){
+      $masterTweetList.html('');
           // var users = streams.users[user];
           for(var i = 0 ; i< streams.users[user].length ; i++){
             var tweet = streams.users[user][i];
             console.log(tweet);
 
-           $( "<div class='row'><div class='btn btn-default col-md-2' id='showOnly'>" + tweet.user +"</div> <div class=' col-md-6'>" + tweet.message + "</div> <div class='col-md-3'>" + moment(tweet.created_at).format('LL') +"</div></div>" ).appendTo( $masterTweetList);
+            $( "<div class='row'><div class='btn btn-default col-md-2' id='showOnly'>" + tweet.user +"</div> <div class=' col-md-6'>" + tweet.message + "</div> <div class='col-md-3'>" + moment(tweet.created_at).format('LL') +"</div></div>" ).appendTo( $masterTweetList);
           }
         };
 
+        var registerUser = function(){
+         visitor = $('#myUser').val();
+         if(visitor){
+          $('#myUser').hide();
+          $('.nTweet').html('');
+          $('#label').text('@'+visitor);
+
+        }
+      };
+
+      var tweetMessage = function(){
+         var tMessage = $('#nMessage').val();
+         writeTweet(tMessage);
+
+         // refresh();
+      };
 
 
-       var refresh = function(){
+
+      var refresh = function(){
         $masterTweetList.html('');
         var users = streams.home;
         for(var i = 0 ; i<users.length ; i++){
@@ -47,31 +73,33 @@
           var tweet = users[i];
           console.log(tweet);
 
-           $( "<div class='row tweetItem' ><div class='btn btn-default col-md-2' id='showOnly' >" + tweet.user +"</div> <div class=' col-md-6'>" + tweet.message + "</div> <div class='col-md-3'>" + moment(tweet.created_at).format('LL') +"</div></div>" ).appendTo($masterTweetList);
-         }
-    }
+          $( "<div class='row tweetItem' ><div class='btn btn-default col-md-2' id='showOnly' >" + tweet.user +"</div> <div class=' col-md-6'>" + tweet.message + "</div> <div class='col-md-3'>" + moment(tweet.created_at).format('LL') +"</div></div>" ).appendTo($masterTweetList);
+        }
+      }
 
       
 
 
-     $(document).on('click', '#showOnly' ,function(){
+      $(document).on('click', '#showOnly' ,function(){
         console.log($(this).text());
-      showOnly($(this).text())
-
-     });
-
-     $('#refreshB').on('click',refresh);
-
-
-
-
+        showOnly($(this).text())
 
       });
 
+      $('#refreshB').on('click',refresh);
+      $('#register').on('click',registerUser);
+      $('#publish').on('click',tweetMessage);
 
 
 
-    </script>
-   
-  </body>
+
+
+    });
+
+
+
+
+</script>
+
+</body>
 </html>
